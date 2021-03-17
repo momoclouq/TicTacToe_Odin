@@ -6,8 +6,21 @@
     grid-template-columns: auto auto auto;
 }
 
+#container > * {
+    margin: 30px;
+}
+
 .cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 1px solid black;
     padding: 20px;
     background-color: bisque;
+    font-size: 2em;
+}
+
+#result {
+    height: 200px;
+    background-color: aliceblue;
 }

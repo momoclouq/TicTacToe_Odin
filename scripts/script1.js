@@ -1,6 +1,6 @@
 //objects using factory functions
 let Gameboard = (() => {
-    let gameboardx = [];
+    let gameboard = [];
     let DOMgameboard = document.querySelector("#gameboard");
 
     //private functions
@@ -8,9 +8,6 @@ let Gameboard = (() => {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.id = `r${row}-c${col}`;
-        cell.addEventListener("click", () => {
-            
-        });
         return cell;
     }
 
@@ -33,7 +30,7 @@ let Gameboard = (() => {
     //return X-O if the game is finished
     //return nothing if the game is still happening
     //return draw otherwise
-    let publicCheckGame = (gameboard) => {
+    let publicCheckGame = () => {
         let end = true;
 
         for (let c = 0; c < 3; c++){
@@ -86,12 +83,33 @@ let Gameboard = (() => {
         return Array.from(gameboard);
     }
 
-    //initialize the game board
-    //_privateCreateGameboard();
+    let publicFillACell = function(r, c, key){
+        if (gameboard[r][c] == "?") {
+            //adjust the inner gameboard and re-calculate result
+            gameboard[r][c] = key;
+
+            //select the cell
+            let cell = document.querySelector(`#r${r}-c${c}`);
+            cell.textContent = key;
+        }
+    };
+
+    let publicResetGameboard = () => {
+        for (let r = 0; r < gameboard.length; r++){
+            for (let c = 0; c < gameboard[r].length; c++){
+                gameboard[r][c] = "?";
+            }
+        }
+    };
+
+    //initialize the gameboard
+    _privateCreateGameboard();
 
     return {
         publicGetGameboard,
-        publicCheckGame
+        publicCheckGame,
+        publicFillACell,
+        publicResetGameboard
     }
 })();
 
@@ -112,17 +130,20 @@ let DisplayController = (() => {
         }
     };
 
-    let publicTest = () => {
-        console.log("testing");
-    };
-
     return {
-        publicDisplayBoard,
-        publicTest
+        publicDisplayBoard
     };
 })();
 
-let Player = (name) => {
-    return {};
+let Player = (name, key) => {
+    let playerName = name;
+
+    let publicMakeAMove = function(r, c){
+        Gameboard.publicFillACell(r, c, key);
+    }
+
+    return {
+        publicMakeAMove
+    };
 };
 
